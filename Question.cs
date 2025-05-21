@@ -1,17 +1,18 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Question : MonoBehaviour {
+public class Question : MonoBehaviour
+{
     // UI Document references - Components that manage UI assets in Unity's UI Toolkit
     UIDocument titleUIDocument;    // Controls the title screen
     UIDocument questionUIDocument; // Controls the questionnaire screen 
     UIDocument resultUIDocument;   // Controls the results screen
-    
+
     // Root visual elements for each UI panel - these are the container elements in each UXML file
     VisualElement titleRoot;      // Root element in the Title.uxml (contains the welcome message and start button)
     VisualElement questionRoot;   // Root element in the Question.uxml (contains question text and answer buttons)
     VisualElement resultRoot;     // Root element in the Result.uxml (contains score display and restart button)
-    
+
     // List of question and the corresponding category
     string[] questions = new string[] {
         "I found it hard to wind down.",
@@ -38,9 +39,9 @@ public class Question : MonoBehaviour {
     };
 
     char[] category = new char[] {
-        'S', 'A', 'D', 'A', 'D', 
-        'S', 'A', 'S', 'A', 'D', 
-        'S', 'S', 'D', 'S', 'A', 
+        'S', 'A', 'D', 'A', 'D',
+        'S', 'A', 'S', 'A', 'D',
+        'S', 'S', 'D', 'S', 'A',
         'D', 'D', 'S', 'A', 'A', 'D'
     };
 
@@ -48,16 +49,17 @@ public class Question : MonoBehaviour {
     int currentQuestionIndex = 0;
     int depressionScore, anxietyScore, stressScore = 0;
     string depressionLevel, anxietyLevel, stressLevel = "";
-    
+
     // UI elements
     Label questionLabel;
-    Label questionCounterLabel;
+    Label questionNumberLabel;
     Button[] answerButtons = new Button[4];
     Button nextButton;
     Button previousButton;
 
     // MonoBehaviour Awake method is called when the script is being executed
-    void Awake() {
+    void Awake()
+    {
         // Find UI Documents by using their GameObject names in the hierarchy
         titleUIDocument = GameObject.Find("Title").GetComponent<UIDocument>();
         questionUIDocument = GameObject.Find("Question").GetComponent<UIDocument>();
@@ -67,9 +69,9 @@ public class Question : MonoBehaviour {
         // Root visual element is the top-level hierarchy which contains all other UI elements
         // Control visibility of the entire screen
         titleRoot = titleUIDocument.rootVisualElement.Q("Background");
-        questionRoot = questionUIDocument.rootVisualElement.Q("Background");  
+        questionRoot = questionUIDocument.rootVisualElement.Q("Background");
         resultRoot = resultUIDocument.rootVisualElement.Q("Background");
-        
+
         // Initially show only the title screen
         SetUIVisibility(showTitle: true, showQuestion: false, showResult: false);
     }
@@ -86,13 +88,15 @@ public class Question : MonoBehaviour {
     }
 
     // MonoBehaviour Start method is called before the first frame update
-    void Start() {
+    void Start()
+    {
         SetupTitleUI();
         SetupQuestionUI();
         SetupResultUI();
     }
-    
-    void SetupTitleUI() {
+
+    void SetupTitleUI()
+    {
         // Get the root visual element first to access to all UI elements in the title screen
         // Find the start button in the title screen
         // Use .Q() query method to find the element by name
@@ -101,133 +105,139 @@ public class Question : MonoBehaviour {
         // User clicks the start button to start the questionnaire
         startButton.clicked += StartQuestionnaire;
     }
-    
-    void StartQuestionnaire() {
+
+    void StartQuestionnaire()
+    {
         // let all the score to be -1
         // -1 means that the question has not been answered yet
         for (int i = 0; i < score.Length; i++) score[i] = -1;
-        
+
         // Hide the title screen and show the question screen
         SetUIVisibility(false, true, false);
 
         SetupQuestionForDisplay();
     }
-    
-    void SetupQuestionForDisplay() {
+
+    void SetupQuestionForDisplay()
+    {
         currentQuestionIndex = 0;
         UpdateQuestionDisplay();
         ClearAllButtonSelections();
     }
 
-    void UpdateQuestionDisplay() {
+    // When the user clicks the "Next" or "Previous" button
+    void UpdateQuestionDisplay()
+    {
+        // Change the question text and the question number
         questionLabel.text = questions[currentQuestionIndex];
-        questionCounterLabel.text = $"Question {currentQuestionIndex + 1} of {questions.Length}";
-        
-        // Update next button text based on whether this is the last question
-        nextButton.text = (currentQuestionIndex == questions.Length - 1) ? "Submit" : "Next";
-        
-        // Hide previous button on first question, show it for all others
+        questionNumberLabel.text = $"Question {currentQuestionIndex + 1} of {questions.Length}";
+
+        // For the first question (Q1), the "Previous" button is hidden
         previousButton.style.display = (currentQuestionIndex == 0) ? DisplayStyle.None : DisplayStyle.Flex;
-        
+
+        // If user reaches the last question (Q21), change the "Next" button to "Submit"
+        nextButton.text = (currentQuestionIndex == questions.Length - 1) ? "Submit" : "Next";
+
         UpdateSelectedState();
     }
 
-    void ClearAllButtonSelections() {
-        for (int i = 0; i < 4; i++) {
+    void UpdateSelectedState()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            answerButtons[i].RemoveFromClassList("selected");
+        }
+
+        // Store the selected score for the current question into the array
+        int selectedAnswer = score[currentQuestionIndex];
+
+
+        if (selectedAnswer >= 0 && selectedAnswer < 4)
+        {
+            answerButtons[selectedAnswer].AddToClassList("selected");
+        }
+    }
+
+    void ClearAllButtonSelections()
+    {
+        for (int i = 0; i < 4; i++)
+        {
             answerButtons[i].RemoveFromClassList("selected");
         }
     }
-    
-    void SetupQuestionUI() {
+
+    void SetupQuestionUI()
+    {
         var root = questionUIDocument.rootVisualElement;
-        
+
         questionLabel = root.Q<Label>("question");
-        questionCounterLabel = root.Q<Label>("questionCounter");
-        
+        questionNumberLabel = root.Q<Label>("questionNumber");
+
         answerButtons = new Button[4];
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++)
+        {
             answerButtons[i] = root.Q<Button>($"answer{i}");
         }
-        
+
         nextButton = root.Q<Button>("nextButton");
         previousButton = root.Q<Button>("previousButton");
-        
+
         SetupAnswerButtons();
         SetupNavigationButtons();
     }
-    
-    
 
-    void SetupResultUI() {
-        var resultRoot = resultUIDocument.rootVisualElement;
-        var restartButton = resultRoot.Q<Button>("restartButton");
-        
-        restartButton.clickable = new Clickable(() => {
-            for (int i = 0; i < score.Length; i++) {
-                score[i] = -1;
-            }
-
-            depressionScore = anxietyScore = stressScore = 0;
-            depressionLevel = anxietyLevel = stressLevel = "";
-            currentQuestionIndex = 0;
-            
-            SetUIVisibility(true, false, false);
-        });
-    }
-
-    void ShowFinalResults() {
-        SetUIVisibility(false, false, true);
-        ShowResultScreen();
-    }
-
-    void SetupAnswerButtons() {
-        for (int i = 0; i < 4; i++) {
+    void SetupAnswerButtons()
+    {
+        for (int i = 0; i < 4; i++)
+        {
             int capturedIndex = i;
-            answerButtons[i].clicked += () => {
+            answerButtons[i].clicked += () =>
+            {
                 score[currentQuestionIndex] = capturedIndex;
                 UpdateSelectedState();
             };
         }
     }
 
-    void SetupNavigationButtons() {
-        nextButton.clicked += () => {
-            if (currentQuestionIndex < questions.Length - 1) {
+    void SetupNavigationButtons()
+    {
+        nextButton.clicked += () =>
+        {
+            if (currentQuestionIndex < questions.Length - 1)
+            {
                 currentQuestionIndex++;
                 UpdateQuestionDisplay();
-            } else {
+
+                // When reached the last question
+            }
+            else
+            {
                 CalculateTotalScore();
                 DetermineSeverity();
                 ShowFinalResults();
             }
         };
 
-        previousButton.clicked += () => {
-            if (currentQuestionIndex > 0) {
+        previousButton.clicked += () =>
+        {
+            // Except the first question
+            if (currentQuestionIndex > 0)
+            {
                 currentQuestionIndex--;
                 UpdateQuestionDisplay();
             }
         };
     }
 
-
-    
-    void UpdateSelectedState() {
-        for (int i = 0; i < 4; i++) {
-            answerButtons[i].RemoveFromClassList("selected");
-        }
-
-        int selectedAnswer = score[currentQuestionIndex];
-        if (selectedAnswer >= 0 && selectedAnswer < 4) {
-            answerButtons[selectedAnswer].AddToClassList("selected");
-        }
-    }
-    
-    void CalculateTotalScore() {
+    void CalculateTotalScore()
+    {
         depressionScore = anxietyScore = stressScore = 0;
-        
-        for (int i = 0; i < questions.Length; i++) {
-            if (score[i] >= 0) {
+
+        for (int i = 0; i < questions.Length; i++)
+        {
+            if (score[i] >= 0)
+            {
+                // Add the score following the corresponding category
                 if (category[i] == 'D') depressionScore += (score[i] * 2);
                 else if (category[i] == 'A') anxietyScore += (score[i] * 2);
                 else if (category[i] == 'S') stressScore += (score[i] * 2);
@@ -235,21 +245,22 @@ public class Question : MonoBehaviour {
         }
     }
 
-    void DetermineSeverity() {
+    void DetermineSeverity()
+    {
         // Determine depression level
         if (depressionScore <= 9) depressionLevel = "Normal";
         else if (depressionScore <= 13) depressionLevel = "Mild";
         else if (depressionScore <= 20) depressionLevel = "Moderate";
         else if (depressionScore <= 27) depressionLevel = "Severe";
         else depressionLevel = "Extremely Severe";
-        
+
         // Determine anxiety level
         if (anxietyScore <= 7) anxietyLevel = "Normal";
         else if (anxietyScore <= 9) anxietyLevel = "Mild";
         else if (anxietyScore <= 14) anxietyLevel = "Moderate";
         else if (anxietyScore <= 19) anxietyLevel = "Severe";
         else anxietyLevel = "Extremely Severe";
-        
+
         // Determine stress level
         if (stressScore <= 14) stressLevel = "Normal";
         else if (stressScore <= 18) stressLevel = "Mild";
@@ -257,22 +268,46 @@ public class Question : MonoBehaviour {
         else if (stressScore <= 33) stressLevel = "Severe";
         else stressLevel = "Extremely Severe";
     }
-    
-    void ShowResultScreen() {
+
+    void ShowFinalResults()
+    {
+        // Hide the question screen and show the result screen
+        SetUIVisibility(false, false, true);
+
+        // Get the root visual element to access all the UI elements
         var resultRoot = resultUIDocument.rootVisualElement;
-        
+
+        // Match the corresponding labels with the variables
         var depressionScoreLabel = resultRoot.Q<Label>("depressionScore");
         var depressionLevelLabel = resultRoot.Q<Label>("depressionLevel");
         var anxietyScoreLabel = resultRoot.Q<Label>("anxietyScore");
         var anxietyLevelLabel = resultRoot.Q<Label>("anxietyLevel");
         var stressScoreLabel = resultRoot.Q<Label>("stressScore");
         var stressLevelLabel = resultRoot.Q<Label>("stressLevel");
-        
+
+        // Set the text of the labels to display the scores and levels
         depressionScoreLabel.text = depressionScore.ToString();
         depressionLevelLabel.text = depressionLevel;
         anxietyScoreLabel.text = anxietyScore.ToString();
         anxietyLevelLabel.text = anxietyLevel;
         stressScoreLabel.text = stressScore.ToString();
         stressLevelLabel.text = stressLevel;
+    }
+    
+    void SetupResultUI() {
+    var resultRoot = resultUIDocument.rootVisualElement;
+    var restartButton = resultRoot.Q<Button>("restartButton");
+    
+    restartButton.clickable = new Clickable(() => {
+        for (int i = 0; i < score.Length; i++) {
+            score[i] = -1;
+        }
+
+        depressionScore = anxietyScore = stressScore = 0;
+        depressionLevel = anxietyLevel = stressLevel = "";
+        currentQuestionIndex = 0;
+        
+        SetUIVisibility(true, false, false);
+    });
     }
 }
