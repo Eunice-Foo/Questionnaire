@@ -1,0 +1,24 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Questionnaire/Theme.uss?fileID=7433441132597879392&amp;guid=78a4c00f7fcb4b842b8b9291ec6d66f6&amp;type=3#Theme" />
+    <ui:VisualElement name="Background" class="background" style="flex-grow: 1;">
+        <ui:Label text="DASS-21 Test Results" name="Title" class="title" />
+        <ui:VisualElement name="Result" style="flex-grow: 0; flex-direction: row; flex-shrink: 0; width: 80%; align-self: auto; justify-content: space-evenly;">
+            <ui:VisualElement name="depressionResult" style="align-items: center; width: 20%;">
+                <ui:Label text="Depression" />
+                <ui:Label text="Label" name="depressionScore" class="score" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+                <ui:Label text="Label" name="depressionLevel" class="level" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="anxietyResult" style="align-items: center; width: 20%;">
+                <ui:Label text="Anxiety" />
+                <ui:Label text="Label" name="anxietyScore" class="score" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+                <ui:Label text="Label" name="anxietyLevel" class="level" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="stressResult" style="align-items: center; width: 20%;">
+                <ui:Label text="Stress" />
+                <ui:Label text="Label" name="stressScore" class="score" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+                <ui:Label text="Label" name="stressLevel" class="level" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:Button text="Test Again" name="restartButton" class="navigationButton" />
+    </ui:VisualElement>
+</ui:UXML>
