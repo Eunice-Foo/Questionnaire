@@ -56,58 +56,60 @@ public class Question : MonoBehaviour {
     Button nextButton;
     Button previousButton;
 
-    // Find all the UI Documents by using their GameObject names in the hierarchy
-    void FindUIDocuments() {
-        GameObject titleUIObject = GameObject.Find("Title");
-        titleUIDocument = titleUIObject.GetComponent<UIDocument>();
-        
-        GameObject questionUIObject = GameObject.Find("Question");
-        questionUIDocument = questionUIObject.GetComponent<UIDocument>();
-        
-        GameObject resultUIObject = GameObject.Find("Result");
-        resultUIDocument = resultUIObject.GetComponent<UIDocument>();
-    }
-        
+    // MonoBehaviour Awake method is called when the script is being executed
     void Awake() {
-        FindUIDocuments();
-        
-        // Get the root visual elements from each UI document
-        // Note: Title uses "Background" (capital B) while others use "background" (lowercase b)
+        // Find UI Documents by using their GameObject names in the hierarchy
+        titleUIDocument = GameObject.Find("Title").GetComponent<UIDocument>();
+        questionUIDocument = GameObject.Find("Question").GetComponent<UIDocument>();
+        resultUIDocument = GameObject.Find("Result").GetComponent<UIDocument>();
+
+        // Get the root visual elements from each UI document by element name
+        // Root visual element is the top-level hierarchy which contains all other UI elements
+        // Control visibility of the entire screen
         titleRoot = titleUIDocument.rootVisualElement.Q("Background");
-        questionRoot = questionUIDocument.rootVisualElement.Q(null, "background");  
-        resultRoot = resultUIDocument.rootVisualElement.Q(null, "background");
+        questionRoot = questionUIDocument.rootVisualElement.Q("Background");  
+        resultRoot = resultUIDocument.rootVisualElement.Q("Background");
         
         // Initially show only the title screen
         SetUIVisibility(showTitle: true, showQuestion: false, showResult: false);
     }
 
+    // Control visibility of different screens
+    // When boolean value is true, DisplayStyle.Flex is used to show the screen
+    // When boolean value is false, DisplayStyle.None is used to hide the screen
+    private void SetUIVisibility(bool showTitle, bool showQuestion, bool showResult)
+    {
+        // ? symbol is used to check if the value is true or false
+        titleRoot.style.display = showTitle ? DisplayStyle.Flex : DisplayStyle.None;
+        questionRoot.style.display = showQuestion ? DisplayStyle.Flex : DisplayStyle.None;
+        resultRoot.style.display = showResult ? DisplayStyle.Flex : DisplayStyle.None;
+    }
+
+    // MonoBehaviour Start method is called before the first frame update
     void Start() {
         SetupTitleUI();
         SetupQuestionUI();
         SetupResultUI();
     }
     
-
-    // Control which UI panel is visible
-    private void SetUIVisibility(bool showTitle, bool showQuestion, bool showResult) {
-        // Use display style to show/hide panels instead of activating/deactivating GameObjects
-        titleRoot.style.display = showTitle ? DisplayStyle.Flex : DisplayStyle.None;
-        questionRoot.style.display = showQuestion ? DisplayStyle.Flex : DisplayStyle.None;
-        resultRoot.style.display = showResult ? DisplayStyle.Flex : DisplayStyle.None;
-    }
-    
     void SetupTitleUI() {
-        var titleRoot = titleUIDocument.rootVisualElement;
-        var startButton = titleRoot.Q<Button>("startButton");
+        // Get the root visual element first to access to all UI elements in the title screen
+        // Find the start button in the title screen
+        // Use .Q() query method to find the element by name
+        var startButton = titleUIDocument.rootVisualElement.Q<Button>("startButton");
+
+        // User clicks the start button to start the questionnaire
         startButton.clicked += StartQuestionnaire;
     }
     
     void StartQuestionnaire() {
-        for (int i = 0; i < score.Length; i++) {
-            score[i] = -1;
-        }
+        // let all the score to be -1
+        // -1 means that the question has not been answered yet
+        for (int i = 0; i < score.Length; i++) score[i] = -1;
         
+        // Hide the title screen and show the question screen
         SetUIVisibility(false, true, false);
+
         SetupQuestionForDisplay();
     }
     
@@ -115,6 +117,19 @@ public class Question : MonoBehaviour {
         currentQuestionIndex = 0;
         UpdateQuestionDisplay();
         ClearAllButtonSelections();
+    }
+
+    void UpdateQuestionDisplay() {
+        questionLabel.text = questions[currentQuestionIndex];
+        questionCounterLabel.text = $"Question {currentQuestionIndex + 1} of {questions.Length}";
+        
+        // Update next button text based on whether this is the last question
+        nextButton.text = (currentQuestionIndex == questions.Length - 1) ? "Submit" : "Next";
+        
+        // Hide previous button on first question, show it for all others
+        previousButton.style.display = (currentQuestionIndex == 0) ? DisplayStyle.None : DisplayStyle.Flex;
+        
+        UpdateSelectedState();
     }
 
     void ClearAllButtonSelections() {
@@ -141,6 +156,8 @@ public class Question : MonoBehaviour {
         SetupNavigationButtons();
     }
     
+    
+
     void SetupResultUI() {
         var resultRoot = resultUIDocument.rootVisualElement;
         var restartButton = resultRoot.Q<Button>("restartButton");
@@ -193,18 +210,7 @@ public class Question : MonoBehaviour {
         };
     }
 
-    void UpdateQuestionDisplay() {
-        questionLabel.text = questions[currentQuestionIndex];
-        questionCounterLabel.text = $"Question {currentQuestionIndex + 1} of {questions.Length}";
-        
-        // Update next button text based on whether this is the last question
-        nextButton.text = (currentQuestionIndex == questions.Length - 1) ? "Submit" : "Next";
-        
-        // Hide previous button on first question, show it for all others
-        previousButton.style.display = (currentQuestionIndex == 0) ? DisplayStyle.None : DisplayStyle.Flex;
-        
-        UpdateSelectedState();
-    }
+
     
     void UpdateSelectedState() {
         for (int i = 0; i < 4; i++) {
