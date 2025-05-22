@@ -5,10 +5,10 @@ public class Question : MonoBehaviour {
 
     // Create variables to store the UI Document
     // Each UI Document is a separate GameObject in the hierarchy
-    UIDocument titleUIDocument, questionUIDocument, resultUIDocument;
-
-    // Root visual element is the top-level hierarchy which contains all other UI elements
-    VisualElement titleRoot, questionRoot, resultRoot;
+    UIDocument titleUIDocument, questionUIDocument, resultUIDocument, notificationUIDocument;
+    // Root visual element is the top hierarchy of the UI Document
+    // It contains all the UI elements in the document
+    VisualElement titleRoot, questionRoot, resultRoot, notificationRoot;
 
     // List of question and the corresponding category
     string[] questions = new string[] {
@@ -50,6 +50,7 @@ public class Question : MonoBehaviour {
     Button nextButton, previousButton;
     int depressionScore, anxietyScore, stressScore = 0;
     string depressionLevel, anxietyLevel, stressLevel = "";
+    ProgressBar progressBar;
 
     // MonoBehaviour Awake method is called when the script is being executed
     void Awake() {
@@ -57,15 +58,20 @@ public class Question : MonoBehaviour {
         titleUIDocument = GameObject.Find("Title").GetComponent<UIDocument>();
         questionUIDocument = GameObject.Find("Question").GetComponent<UIDocument>();
         resultUIDocument = GameObject.Find("Result").GetComponent<UIDocument>();
+        notificationUIDocument = GameObject.Find("Notification").GetComponent<UIDocument>();
 
         // Get the root visual elements from each UI document by element name
         // Control visibility of the entire screen
         titleRoot = titleUIDocument.rootVisualElement.Q("Background");
         questionRoot = questionUIDocument.rootVisualElement.Q("Background");
         resultRoot = resultUIDocument.rootVisualElement.Q("Background");
+        notificationRoot = notificationUIDocument.rootVisualElement.Q("Background");
 
         // Initially show only the title screen
         SetUIVisibility(showTitle: true, showQuestion: false, showResult: false);
+
+        // Notification message is hidden initially unless trigglered
+        notificationRoot.style.display = DisplayStyle.None;
     }
 
     // Control visibility of different screens
@@ -85,6 +91,7 @@ public class Question : MonoBehaviour {
         SetupTitleUI();
         SetupQuestionUI();
         SetupResultUI();
+        SetupNotificationUI();
     }
 
     void SetupTitleUI() {
@@ -117,6 +124,9 @@ public class Question : MonoBehaviour {
         questionLabel.text = questions[currentQuestionIndex];
         questionNumberLabel.text = $"Question {currentQuestionIndex + 1} of {questions.Length}";
 
+        // Update the progress bar
+        progressBar.value = currentQuestionIndex + 1;
+        
         // For the first question (Q1), the "Previous" button is hidden
         previousButton.style.display = (currentQuestionIndex == 0) ? DisplayStyle.None : DisplayStyle.Flex;
 
@@ -149,6 +159,9 @@ public class Question : MonoBehaviour {
     void SetupQuestionUI() {
         // Get the root visual element first to access all the UI elements
         var root = questionUIDocument.rootVisualElement;
+        
+        // Get the progress bar
+        progressBar = root.Q<ProgressBar>("progressBar");
         
         // Match the question label and question number label with the variables
         questionLabel = root.Q<Label>("question");
@@ -190,9 +203,20 @@ public class Question : MonoBehaviour {
             if (currentQuestionIndex < questions.Length - 1) {
                 currentQuestionIndex++;
                 UpdateQuestionDisplay();
-
-            // When reached the last question, question[20]
+            
+            // When reached the last question and "Submit" button is clicked
             } else {
+                // Check if all questions are answered
+                // For unanswered questions, the score == -1
+                for (int i = 0; i < score.Length; i++) {
+                    if (score[i] == -1) {
+                        // If found unanswered question, show notification
+                        ToggleNotificationVisibility(true);
+                        return; // Exit to stop further execution
+                    }
+                }
+                
+                // All questions are answered, proceed with submission
                 CalculateTotalScore();
                 DetermineSeverity();
                 ShowFinalResults();
@@ -206,6 +230,18 @@ public class Question : MonoBehaviour {
                 UpdateQuestionDisplay();
             }
         };
+    }
+
+    // Control the visibility of the notification message
+    private void ToggleNotificationVisibility(bool show) {
+        notificationRoot.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
+    }
+
+    void SetupNotificationUI() {
+        var root = notificationUIDocument.rootVisualElement;
+        var confirmButton = root.Q<Button>("Confirm");
+        // Close the message when click on the "Confirm" button
+        confirmButton.clicked += () => ToggleNotificationVisibility(false);
     }
 
     void CalculateTotalScore() {
