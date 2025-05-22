@@ -1,15 +1,15 @@
 VisualElement {
-    -unity-font-definition: url("project://database/Assets/Questionnaire/MONTSERRAT-REGULAR.TTF?fileID=12800000&guid=cf34206c24a4c974684379c9e7870de3&type=3#MONTSERRAT-REGULAR");
+    -unity-font-definition: url("project://database/Assets/Questionnaire/Montserrat-Regular.TTF?fileID=12800000&guid=cf34206c24a4c974684379c9e7870de3&type=3#Montserrat-Regular");
     font-size: 16px;
 }
 
 .background {
     background-color: rgb(255, 255, 255);
     background-size: 80% 80%;
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
-    border-bottom-right-radius: 24px;
-    border-bottom-left-radius: 24px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
     position: relative;
     right: 0;
     bottom: 0;
@@ -36,6 +36,8 @@ VisualElement {
 .title {
     font-size: 60px;
     -unity-font-style: normal;
+    -unity-font-definition: url("project://database/Assets/Questionnaire/Montserrat-ExtraBold.ttf?fileID=12800000&guid=f2adb00678d472149a46f70621e6ddbb&type=3#Montserrat-ExtraBold");
+    color: rgb(145, 98, 231);
 }
 
 .scoreButton {
@@ -46,19 +48,19 @@ VisualElement {
     border-bottom-right-radius: 6px;
     border-bottom-left-radius: 6px;
     font-size: 18px;
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(232, 219, 255);
     border-left-color: rgb(0, 0, 0);
     border-right-color: rgb(0, 0, 0);
     border-top-color: rgb(0, 0, 0);
     border-bottom-color: rgb(0, 0, 0);
-    border-top-width: 1px;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
-    border-left-width: 1px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
 }
 
 .scoreButton:hover {
-    background-color: rgb(220, 220, 220);
+    background-color: rgb(188, 158, 242);
 }
 
 .scoreButton.selected {
@@ -66,10 +68,12 @@ VisualElement {
     border-right-width: 2px;
     border-bottom-width: 2px;
     border-left-width: 2px;
-    border-left-color: rgb(0, 0, 0);
-    border-right-color: rgb(0, 0, 0);
-    border-top-color: rgb(0, 0, 0);
-    border-bottom-color: rgb(0, 0, 0);
+    border-left-color: rgb(145, 98, 231);
+    border-right-color: rgb(145, 98, 231);
+    border-top-color: rgb(145, 98, 231);
+    border-bottom-color: rgb(145, 98, 231);
+    -unity-font-style: bold;
+    color: rgb(145, 98, 231);
 }
 
 .scoreLabel {
@@ -91,21 +95,22 @@ VisualElement {
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
     border-bottom-left-radius: 6px;
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(145, 98, 231);
     text-overflow: clip;
     padding-top: 16px;
     padding-right: 32px;
     padding-bottom: 16px;
     padding-left: 32px;
-    border-top-width: 1.5px;
-    border-right-width: 1.5px;
-    border-bottom-width: 1.5px;
-    border-left-width: 1.5px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
     font-size: 16px;
+    color: rgb(255, 255, 255);
 }
 
 .navigationButton:hover {
-    background-color: rgb(199, 199, 199);
+    background-color: rgb(188, 158, 242);
 }
 
 .progressBar {
@@ -130,4 +135,16 @@ VisualElement {
 .level {
     -unity-font-style: normal;
     font-size: 24px;
+}
+
+.resultColour {
+    -unity-text-align: upper-center;
+    padding-top: 24px;
+    padding-right: 24px;
+    padding-bottom: 24px;
+    padding-left: 24px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
 }

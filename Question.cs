@@ -245,6 +245,25 @@ public class Question : MonoBehaviour {
         else stressLevel = "Extremely Severe";
     }
 
+    // Assign colours based on severity level
+    Color GetSeverityColour(string severityLevel) {
+        switch (severityLevel) {
+            case "Normal":
+                return new Color(0.83f, 0.95f, 0.64f); // Light green
+            case "Mild":
+                return new Color(1.00f, 0.96f, 0.71f); // Light yellow
+            case "Moderate":
+                return new Color(0.98f, 0.74f, 0.52f); // Orange
+            case "Severe":
+                return new Color(0.92f, 0.53f, 0.62f); // Light red
+            case "Extremely Severe":
+                return new Color(0.79f, 0.00f, 0.13f); // Dark red
+            default:
+                return Color.white;
+        }
+    }
+
+    // Modify ShowFinalResults method to apply colors
     void ShowFinalResults() {
         // Hide the question screen and show the result screen
         SetUIVisibility(false, false, true);
@@ -260,6 +279,11 @@ public class Question : MonoBehaviour {
         var stressScoreLabel = root.Q<Label>("stressScore");
         var stressLevelLabel = root.Q<Label>("stressLevel");
         
+        // Get the result color containers
+        var depressionColour = root.Q("depressionColour");
+        var anxietyColour = root.Q("anxietyColour");
+        var stressColour = root.Q("stressColour");
+        
         // Set the text of the labels to display the scores and levels
         depressionScoreLabel.text = depressionScore.ToString();
         depressionLevelLabel.text = depressionLevel;
@@ -267,6 +291,11 @@ public class Question : MonoBehaviour {
         anxietyLevelLabel.text = anxietyLevel;
         stressScoreLabel.text = stressScore.ToString();
         stressLevelLabel.text = stressLevel;
+        
+        // Apply colours based on severity levels
+        depressionColour.style.backgroundColor = GetSeverityColour(depressionLevel);
+        anxietyColour.style.backgroundColor = GetSeverityColour(anxietyLevel);
+        stressColour.style.backgroundColor = GetSeverityColour(stressLevel);
     }
 
     void SetupResultUI() {
