@@ -1,17 +1,14 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Question : MonoBehaviour
-{
-    // UI Document references - Components that manage UI assets in Unity's UI Toolkit
-    UIDocument titleUIDocument;    // Controls the title screen
-    UIDocument questionUIDocument; // Controls the questionnaire screen 
-    UIDocument resultUIDocument;   // Controls the results screen
+public class Question : MonoBehaviour {
 
-    // Root visual elements for each UI panel - these are the container elements in each UXML file
-    VisualElement titleRoot;      // Root element in the Title.uxml (contains the welcome message and start button)
-    VisualElement questionRoot;   // Root element in the Question.uxml (contains question text and answer buttons)
-    VisualElement resultRoot;     // Root element in the Result.uxml (contains score display and restart button)
+    // Create variables to store the UI Document
+    // Each UI Document is a separate GameObject in the hierarchy
+    UIDocument titleUIDocument, questionUIDocument, resultUIDocument;
+
+    // Root visual element is the top-level hierarchy which contains all other UI elements
+    VisualElement titleRoot, questionRoot, resultRoot;
 
     // List of question and the corresponding category
     string[] questions = new string[] {
@@ -45,28 +42,23 @@ public class Question : MonoBehaviour
         'D', 'D', 'S', 'A', 'A', 'D'
     };
 
+    // Declare all variables and UI elements
     int[] score = new int[21];
+    Button[] scoreButtons = new Button[4];
     int currentQuestionIndex = 0;
+    Label questionLabel, questionNumberLabel;
+    Button nextButton, previousButton;
     int depressionScore, anxietyScore, stressScore = 0;
     string depressionLevel, anxietyLevel, stressLevel = "";
 
-    // UI elements
-    Label questionLabel;
-    Label questionNumberLabel;
-    Button[] scoreButtons = new Button[4];
-    Button nextButton;
-    Button previousButton;
-
     // MonoBehaviour Awake method is called when the script is being executed
-    void Awake()
-    {
+    void Awake() {
         // Find UI Documents by using their GameObject names in the hierarchy
         titleUIDocument = GameObject.Find("Title").GetComponent<UIDocument>();
         questionUIDocument = GameObject.Find("Question").GetComponent<UIDocument>();
         resultUIDocument = GameObject.Find("Result").GetComponent<UIDocument>();
 
         // Get the root visual elements from each UI document by element name
-        // Root visual element is the top-level hierarchy which contains all other UI elements
         // Control visibility of the entire screen
         titleRoot = titleUIDocument.rootVisualElement.Q("Background");
         questionRoot = questionUIDocument.rootVisualElement.Q("Background");
@@ -79,8 +71,7 @@ public class Question : MonoBehaviour
     // Control visibility of different screens
     // When boolean value is true, DisplayStyle.Flex is used to show the screen
     // When boolean value is false, DisplayStyle.None is used to hide the screen
-    private void SetUIVisibility(bool showTitle, bool showQuestion, bool showResult)
-    {
+    private void SetUIVisibility(bool showTitle, bool showQuestion, bool showResult) {
         // ? symbol is used to check if the value is true or false
         titleRoot.style.display = showTitle ? DisplayStyle.Flex : DisplayStyle.None;
         questionRoot.style.display = showQuestion ? DisplayStyle.Flex : DisplayStyle.None;
@@ -90,15 +81,13 @@ public class Question : MonoBehaviour
     // MonoBehaviour Start method is called before the first frame update
     // Match all the UI elements with the variables and set up the interactions
     // This method is call once only when the script is first executed
-    void Start()
-    {
+    void Start() {
         SetupTitleUI();
         SetupQuestionUI();
         SetupResultUI();
     }
 
-    void SetupTitleUI()
-    {
+    void SetupTitleUI() {
         // Get the root visual element first to access all UI elements
         var root = titleUIDocument.rootVisualElement;
         
@@ -109,8 +98,7 @@ public class Question : MonoBehaviour
         startButton.clicked += StartQuestionnaire;
     }
 
-    void StartQuestionnaire()
-    {
+    void StartQuestionnaire() {
         // Let all the scores be -1
         // -1 means that the question has not been answered yet
         for (int i = 0; i < score.Length; i++) score[i] = -1;
@@ -124,8 +112,7 @@ public class Question : MonoBehaviour
     }
 
     // When the user clicks the "Next" or "Previous" button
-    void UpdateQuestionDisplay()
-    {
+    void UpdateQuestionDisplay() {
         // Change the question text and the question number
         questionLabel.text = questions[currentQuestionIndex];
         questionNumberLabel.text = $"Question {currentQuestionIndex + 1} of {questions.Length}";
@@ -140,8 +127,7 @@ public class Question : MonoBehaviour
     }
 
     // Show the score button is being selected
-    void UpdateSelectedState()
-    {
+    void UpdateSelectedState() {
         // Clear all button selection first
         for (int i = 0; i < scoreButtons.Length; i++) {
             scoreButtons[i].RemoveFromClassList("selected");
@@ -160,8 +146,7 @@ public class Question : MonoBehaviour
         // Therefore no score button is being selected
     }
 
-    void SetupQuestionUI()
-    {
+    void SetupQuestionUI() {
         // Get the root visual element first to access all the UI elements
         var root = questionUIDocument.rootVisualElement;
         
@@ -183,8 +168,7 @@ public class Question : MonoBehaviour
     }
 
     // Set up the interaction for the score buttons
-    void SetupScoreButtons()
-    {
+    void SetupScoreButtons() {
         for (int i = 0; i < scoreButtons.Length; i++)
         {
             int selectedScore = i;
@@ -201,8 +185,7 @@ public class Question : MonoBehaviour
     }
 
     // Set up the interaction for the navigation buttons
-    void SetupNavigationButtons()
-    {
+    void SetupNavigationButtons() {
         nextButton.clicked += () => {
             if (currentQuestionIndex < questions.Length - 1) {
                 currentQuestionIndex++;
