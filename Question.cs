@@ -249,13 +249,13 @@ public class Question : MonoBehaviour {
     Color GetSeverityColour(string severityLevel) {
         switch (severityLevel) {
             case "Normal":
-                return new Color(0.83f, 0.95f, 0.64f); // Light green
+                return new Color(0.83f, 0.95f, 0.64f); // Green
             case "Mild":
-                return new Color(1.00f, 0.96f, 0.71f); // Light yellow
+                return new Color(1.00f, 0.96f, 0.71f); // Yellow
             case "Moderate":
                 return new Color(0.98f, 0.74f, 0.52f); // Orange
             case "Severe":
-                return new Color(0.92f, 0.53f, 0.62f); // Light red
+                return new Color(0.92f, 0.53f, 0.62f); // Red
             case "Extremely Severe":
                 return new Color(0.79f, 0.00f, 0.13f); // Dark red
             default:

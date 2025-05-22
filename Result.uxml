@@ -2,29 +2,29 @@
     <Style src="project://database/Assets/Questionnaire/Theme.uss?fileID=7433441132597879392&amp;guid=78a4c00f7fcb4b842b8b9291ec6d66f6&amp;type=3" />
     <ui:VisualElement name="Background" class="background" style="flex-grow: 1;">
         <ui:Label text="DASS-21 Test Results" name="Title" class="title" />
-        <ui:VisualElement name="Result" style="flex-grow: 0; flex-direction: row; flex-shrink: 0; width: 80%; align-self: auto; justify-content: space-evenly;">
-            <ui:VisualElement name="depressionResult" style="align-items: center; width: 20%;">
+        <ui:VisualElement name="Result" style="flex-grow: 0; flex-direction: row; flex-shrink: 0; width: 80%; align-self: auto; justify-content: space-evenly; margin-bottom: 10%;">
+            <ui:VisualElement name="depressionResult" style="align-items: center; width: 25%;">
                 <ui:Label text="Depression" style="margin-top: 0; margin-right: 0; margin-bottom: 12px; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 20px;" />
                 <ui:VisualElement name="depressionColour" class="scoreColour resultColour" style="flex-grow: 1;">
-                    <ui:Label text="Label" name="depressionScore" class="score" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
-                    <ui:Label text="Label" name="depressionLevel" class="level" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+                    <ui:Label text="Label" name="depressionScore" class="score" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 48px; -unity-font-style: normal;" />
+                    <ui:Label text="Label" name="depressionLevel" class="level" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 20px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="anxietyResult" style="align-items: center; width: 20%;">
+            <ui:VisualElement name="anxietyResult" style="align-items: center; width: 25%; flex-shrink: 0;">
                 <ui:Label text="Anxiety" style="margin-top: 0; margin-right: 0; margin-bottom: 12px; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 20px;" />
                 <ui:VisualElement name="anxietyColour" class="scoreColour resultColour" style="flex-grow: 1;">
-                    <ui:Label text="Label" name="anxietyScore" class="score" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
-                    <ui:Label text="Label" name="anxietyLevel" class="level" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+                    <ui:Label text="Label" name="anxietyScore" class="score" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 48px; -unity-font-style: normal;" />
+                    <ui:Label text="Label" name="anxietyLevel" class="level" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 20px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="stressResult" style="align-items: center; width: 20%;">
+            <ui:VisualElement name="stressResult" style="align-items: center; width: 25%;">
                 <ui:Label text="Stress" style="margin-top: 0; margin-right: 0; margin-bottom: 12px; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 20px;" />
                 <ui:VisualElement name="stressColour" class="scoreColour resultColour" style="flex-grow: 1;">
-                    <ui:Label text="Label" name="stressScore" class="score" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
-                    <ui:Label text="Label" name="stressLevel" class="level" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+                    <ui:Label text="Label" name="stressScore" class="score" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; -unity-font-style: normal; font-size: 48px;" />
+                    <ui:Label text="Label" name="stressLevel" class="level" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 20px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:Button text="Test Again" name="restartButton" class="navigationButton" />
+        <ui:Button text="Test Again" name="restartButton" class="navigationButton" style="position: absolute; bottom: 10%;" />
     </ui:VisualElement>
 </ui:UXML>
