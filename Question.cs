@@ -50,7 +50,7 @@ public class Question : MonoBehaviour {
     Button nextButton, previousButton;
     int depressionScore, anxietyScore, stressScore = 0;
     string depressionLevel, anxietyLevel, stressLevel = "";
-    ProgressBar progressBar;
+    VisualElement[] questionIndicators = new VisualElement[21];
 
     // MonoBehaviour Awake method is called when the script is being executed
     void Awake() {
@@ -124,9 +124,6 @@ public class Question : MonoBehaviour {
         questionLabel.text = questions[currentQuestionIndex];
         questionNumberLabel.text = $"Question {currentQuestionIndex + 1} of {questions.Length}";
 
-        // Update the progress bar
-        progressBar.value = currentQuestionIndex + 1;
-        
         // For the first question (Q1), the "Previous" button is hidden
         previousButton.style.display = (currentQuestionIndex == 0) ? DisplayStyle.None : DisplayStyle.Flex;
 
@@ -134,6 +131,7 @@ public class Question : MonoBehaviour {
         nextButton.text = (currentQuestionIndex == questions.Length - 1) ? "Submit" : "Next";
 
         UpdateSelectedState();
+        UpdateQuestionIndicators();
     }
 
     // Show the score button is being selected
@@ -160,9 +158,6 @@ public class Question : MonoBehaviour {
         // Get the root visual element first to access all the UI elements
         var root = questionUIDocument.rootVisualElement;
         
-        // Get the progress bar
-        progressBar = root.Q<ProgressBar>("progressBar");
-        
         // Match the question label and question number label with the variables
         questionLabel = root.Q<Label>("question");
         questionNumberLabel = root.Q<Label>("questionNumber");
@@ -175,6 +170,9 @@ public class Question : MonoBehaviour {
         // Match the next and previous buttons
         nextButton = root.Q<Button>("nextButton");
         previousButton = root.Q<Button>("previousButton");
+        
+        // Add this line to set up the indicators
+        SetupQuestionIndicators();
         
         SetupScoreButtons();
         SetupNavigationButtons();
@@ -193,6 +191,7 @@ public class Question : MonoBehaviour {
                 
                 // Show the score button as selected state
                 UpdateSelectedState();
+                UpdateQuestionIndicators(); // Add this line to update indicators after answering
             };
         }
     }
@@ -353,5 +352,39 @@ public class Question : MonoBehaviour {
             // Hide the result screen and show the title screen
             SetUIVisibility(true, false, false);
         });
+    }
+
+    void SetupQuestionIndicators() {
+        var root = questionUIDocument.rootVisualElement;
+        
+        // Get all 21 question indicators
+        for (int i = 0; i < questions.Length; i++) {
+            int questionIndex = i; // Capture for lambda
+            questionIndicators[i] = root.Q($"question{i+1}");
+            
+            // Add click event to navigate to the question
+            questionIndicators[i].RegisterCallback<ClickEvent>(_ => {
+                currentQuestionIndex = questionIndex;
+                UpdateQuestionDisplay();
+            });
+        }
+        
+        // Initialize the indicators
+        UpdateQuestionIndicators();
+    }
+
+    void UpdateQuestionIndicators() {
+        for (int i = 0; i < questions.Length; i++) {
+            bool isAnswered = score[i] != -1;
+            bool isCurrentQuestion = i == currentQuestionIndex;
+            
+            if (isCurrentQuestion) {
+                questionIndicators[i].style.backgroundColor = new Color(0.57f, 0.38f, 0.91f); // Purple
+            } else if (isAnswered) {
+                questionIndicators[i].style.backgroundColor = new Color(0.57f, 0.38f, 0.91f); // Purple
+            } else { // no colour
+                questionIndicators[i].style.backgroundColor = Color.white;
+            }
+        }
     }
 }

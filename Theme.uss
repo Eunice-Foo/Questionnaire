@@ -184,16 +184,24 @@ VisualElement {
     color: rgb(255, 255, 255);
 }
 
-ProgressBar {
-    height: 10px;
+.questionIndicator {
+    background-color: rgb(255, 255, 255);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    margin-right: 3px;
+    margin-left: 0;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
 }
 
-ProgressBar .unity-progress-bar__progress {
-    background-color: rgb(145, 98, 231);
-    border-radius: 7px;
-}
-
-ProgressBar .unity-progress-bar__background {
-    background-color: rgb(232, 219, 255);
-    border-radius: 10px;
+.questionIndicator:hover {
+    background-color: rgb(188, 158, 242);
 }
