@@ -141,21 +141,26 @@ public class Question : MonoBehaviour
         UpdateSelectedState();
     }
 
+    // Show the score button is being selected
     void UpdateSelectedState()
     {
+        // Clear all button selections
         for (int i = 0; i < 4; i++)
         {
             answerButtons[i].RemoveFromClassList("selected");
         }
 
-        // Store the selected score for the current question into the array
+        // Get the selected score from the array
         int selectedAnswer = score[currentQuestionIndex];
 
-
+        // If the selected score is between 0 and 3, show the selected state
         if (selectedAnswer >= 0 && selectedAnswer < 4)
         {
             answerButtons[selectedAnswer].AddToClassList("selected");
         }
+
+        // If the selected score is -1, means that this question has not been answered yet
+        // Therefore no score button is being selected
     }
 
     void ClearAllButtonSelections()
@@ -168,17 +173,20 @@ public class Question : MonoBehaviour
 
     void SetupQuestionUI()
     {
+        // Get the root visual element to access all the UI elements
         var root = questionUIDocument.rootVisualElement;
 
         questionLabel = root.Q<Label>("question");
         questionNumberLabel = root.Q<Label>("questionNumber");
 
         answerButtons = new Button[4];
-        for (int i = 0; i < 4; i++)
+        // Match all four answer buttons
+        for (int i = 0; i < answerButtons.Length; i++)
         {
             answerButtons[i] = root.Q<Button>($"answer{i}");
         }
 
+        // Match the next and previous buttons
         nextButton = root.Q<Button>("nextButton");
         previousButton = root.Q<Button>("previousButton");
 
@@ -190,10 +198,14 @@ public class Question : MonoBehaviour
     {
         for (int i = 0; i < 4; i++)
         {
-            int capturedIndex = i;
+            int selectedScore = i;
+            // When user clicks on the score button
             answerButtons[i].clicked += () =>
             {
-                score[currentQuestionIndex] = capturedIndex;
+                // Store the selected score for the current question
+                score[currentQuestionIndex] = selectedScore;
+
+                // Show the score button as selected state
                 UpdateSelectedState();
             };
         }
@@ -229,8 +241,7 @@ public class Question : MonoBehaviour
         };
     }
 
-    void CalculateTotalScore()
-    {
+    void CalculateTotalScore() {
         depressionScore = anxietyScore = stressScore = 0;
 
         for (int i = 0; i < questions.Length; i++)
