@@ -373,18 +373,23 @@ public class Question : MonoBehaviour {
         UpdateQuestionIndicators();
     }
 
+    // Modify UpdateQuestionIndicators() to use classes instead of inline styles
     void UpdateQuestionIndicators() {
         for (int i = 0; i < questions.Length; i++) {
             bool isAnswered = score[i] != -1;
             bool isCurrentQuestion = i == currentQuestionIndex;
             
+            // Remove any previous classes
+            questionIndicators[i].RemoveFromClassList("answered");
+            questionIndicators[i].RemoveFromClassList("current");
+            
+            // Add appropriate classes instead of setting style directly
             if (isCurrentQuestion) {
-                questionIndicators[i].style.backgroundColor = new Color(0.57f, 0.38f, 0.91f); // Purple
+                questionIndicators[i].AddToClassList("current");
             } else if (isAnswered) {
-                questionIndicators[i].style.backgroundColor = new Color(0.57f, 0.38f, 0.91f); // Purple
-            } else { // no colour
-                questionIndicators[i].style.backgroundColor = Color.white;
+                questionIndicators[i].AddToClassList("answered");
             }
+            // No class for unanswered, non-current questions - will use default style
         }
     }
 }

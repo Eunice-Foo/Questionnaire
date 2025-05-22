@@ -202,6 +202,16 @@ VisualElement {
     border-bottom-color: rgb(0, 0, 0);
 }
 
-.questionIndicator:hover {
+.questionIndicator:hover,
+.questionIndicator.current:hover,
+.questionIndicator.answered:hover {
     background-color: rgb(188, 158, 242);
+}
+
+.questionIndicator.current {
+    background-color: rgb(145, 98, 231);
+}
+
+.questionIndicator.answered {
+    background-color: rgb(232, 219, 255);
 }
