@@ -6,7 +6,7 @@ A virtual reality application of the **Depression, Anxiety, and Stress Scale (DA
 
 - Interactive questionnaire with **21 questions**
 - Visual question navigation with **clickable indicators**
-- **Color-coded results** showing severity levels for depression, anxiety, and stress
+- **Colour-coded results** showing severity levels for depression, anxiety, and stress
 - **Notification system** for incomplete questionnaires
 - Clean, modern UI with consistent design
 
