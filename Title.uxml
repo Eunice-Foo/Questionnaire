@@ -1,11 +1,11 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Questionnaire/Theme.uss?fileID=7433441132597879392&amp;guid=78a4c00f7fcb4b842b8b9291ec6d66f6&amp;type=3" />
+    <Style src="project://database/Assets/Questionnaire/Theme.uss?fileID=7433441132597879392&amp;guid=78a4c00f7fcb4b842b8b9291ec6d66f6&amp;type=3#Theme" />
     <ui:VisualElement name="Background" class="background">
         <ui:VisualElement name="Title" style="flex-grow: 0; flex-shrink: 0; align-items: center; justify-content: center; align-content: auto; align-self: auto;">
-            <ui:Label text="DASS - 21" name="Title" class="title" style="font-size: 100px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+            <ui:Label text="DASS-21" name="Title" class="title" style="font-size: 100px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
             <ui:Label text="Depression, Anxiety and Stress Scale - 21 Items" name="Subtitle" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; -unity-font-style: bold;" />
         </ui:VisualElement>
-        <ui:Label text="Instruction:&#10;Please read each statement and circle a number 0, 1, 2 or 3 which indicates how much the statement applied to you over the past week.&#10;There are no right or wrong answers.&#10;Do not spend too much time on any statement." name="Instruction" style="white-space: normal; -unity-font-style: normal;" />
+        <ui:Label text="Instructions:&#10;1. Please read each statement.&#10;2. Circle a number 0, 1, 2 or 3 which indicates how much the statement applied to you over the past week.&#10;3. There are no right or wrong answers.&#10;4. Do not spend too much time on any statement." name="Instruction" style="white-space: normal; -unity-font-style: normal;" />
         <ui:Button text="Start" name="startButton" class="navigationButton" />
     </ui:VisualElement>
 </ui:UXML>

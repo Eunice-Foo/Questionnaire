@@ -298,6 +298,21 @@ public class Question : MonoBehaviour {
         }
     }
 
+    // Change text color based on severity level
+    void UpdateTextColorForSeverity(Label scoreLabel, Label levelLabel, string severityLevel) {
+        // Default text color is black
+        Color textColor = Color.black;
+        
+        // For "Extremely Severe" level, use white text for better contrast
+        if (severityLevel == "Extremely Severe") {
+            textColor = Color.white;
+        }
+        
+        // Apply the color to both the score and level labels
+        scoreLabel.style.color = textColor;
+        levelLabel.style.color = textColor;
+    }
+
     // Modify ShowFinalResults method to apply colors
     void ShowFinalResults() {
         // Hide the question screen and show the result screen
@@ -331,6 +346,11 @@ public class Question : MonoBehaviour {
         depressionColour.style.backgroundColor = GetSeverityColour(depressionLevel);
         anxietyColour.style.backgroundColor = GetSeverityColour(anxietyLevel);
         stressColour.style.backgroundColor = GetSeverityColour(stressLevel);
+        
+        // Update text colors based on severity
+        UpdateTextColorForSeverity(depressionScoreLabel, depressionLevelLabel, depressionLevel);
+        UpdateTextColorForSeverity(anxietyScoreLabel, anxietyLevelLabel, anxietyLevel);
+        UpdateTextColorForSeverity(stressScoreLabel, stressLevelLabel, stressLevel);
     }
 
     void SetupResultUI() {
